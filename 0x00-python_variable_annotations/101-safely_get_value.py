@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """ More involved type annotations """
-from typing import TypeVar, Mapping
+from typing import Mapping, Any, Union, TypeVar
 
-K = TypeVar('K')
-V = TypeVar('V')
 
-def safely_get_value(dct: Mapping[K, V], key: K, default: V = None) -> V:
+T = TypeVar('T')
+
+def safely_get_value(dct: Mapping, key: Any, default: Union[T, NoneType] = None) -> Union[Any, T]:
     """ adds type annotations to the function """
     if key in dct:
         return dct[key]
