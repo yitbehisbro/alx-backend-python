@@ -53,13 +53,17 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_public_repos_url.assert_called_once()
             mock_get_json.assert_called_once()
 
+    """ inputs to test the functionality """
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
-        ({"license": {"key": "other_license"}}, "my_license", False)
-    ])
-    def test_has_license(self, repo, license_key, expected):
-        """to unit-test GithubOrgClient.has_license"""
-        self.assertEqual(GithubOrgClient.has_license(repo, license_key), expected)
+        ({"license": {"key": "other_license"}}, "my_license", False),
+        ])
+    def test_has_license(self, repo, license_key, expected_return):
+        """ to unit-test GithubOrgClient.has_license """
+        test_client = GithubOrgClient("holberton")
+        test_return = test_client.has_license(repo, license_key)
+        self.assertEqual(expected_return, test_return)
+
 
 @parameterized_class(
     ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
