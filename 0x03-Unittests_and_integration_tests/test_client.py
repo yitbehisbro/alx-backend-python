@@ -21,7 +21,8 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient(org_name)
         response = client.org()
         self.assertEqual(response, test_payload)
-        mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
+        url = "https://api.github.com/orgs/"
+        mock_get_json.assert_called_once_with(f"{url}{org_name}")
 
     def test_public_repos_url(self):
         """ to unit-test GithubOrgClient._public_repos_url """
@@ -42,8 +43,8 @@ class TestGithubOrgClient(unittest.TestCase):
         test_payload = [{"name": "repo1"}, {"name": "repo2"}]
         mock_get_json.return_value = test_payload
 
-        with patch('client.GithubOrgClient._public_repos_url', new_callable=PropertyMock)
-            as mock_public_repos_url:
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mock_public_repos_url:
             mock_public_repos_url.return_value = "https://api.github.com/repos"
             client = GithubOrgClient("test_org")
             response = client.public_repos()
@@ -91,5 +92,5 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """ method to test the public_repos with the argument license """
         test_class = GithubOrgClient("holberton")
         assert True
-            response = GithubOrgClient(name)._public_repos_url
-            self.assertEqual(response, result.get('repos_url'))
+        response = GithubOrgClient(name)._public_repos_url
+        self.assertEqual(response, result.get('repos_url'))
