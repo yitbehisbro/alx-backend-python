@@ -9,19 +9,20 @@ from urllib.error import HTTPError
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """ TESTCASE """
-    """ inputs to test the functionality """
+    """ TESTCASE inputs to test the functionality """
     @parameterized.expand([
         ("google"),
         ("abc"),
         ])
-    @patch("client.get_json", return_value={"payload": True})
-    def test_org(self, org_name, mock_get):
+    @patch("client.get_json")
+    def test_org(self, org_name, mock_get_json):
         """ test that GithubOrgClient.org returns the correct value """
-        test_client = GithubOrgClient(org_name)
-        test_return = test_client.org
-        self.assertEqual(test_return, mock_get.return_value)
-        mock_get.assert_called_once
+        test_payload = {"payload": True}
+        mock_get_json.return_value = test_payload
+        client = GithubOrgClient(org_name)
+        response = client.org()
+        self.assertEqual(response, test_payload)
+        mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
 
     def test_public_repos_url(self):
         """ to unit-test GithubOrgClient._public_repos_url """
