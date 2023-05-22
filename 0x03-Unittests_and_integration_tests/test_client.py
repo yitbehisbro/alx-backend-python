@@ -14,10 +14,9 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google"),
         ("abc"),
         ])
-    @patch("client.get_json")
+    @patch("client.get_json", test_payload={"payload": True})
     def test_org(self, org_name, mock_get_json):
         """ test that GithubOrgClient.org returns the correct value """
-        test_payload = {"payload": True}
         mock_get_json.return_value = test_payload
         client = GithubOrgClient(org_name)
         response = client.org()
